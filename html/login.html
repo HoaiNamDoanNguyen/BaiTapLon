@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập và Đăng ký</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script> 
+    <style>
+        /* Thêm CSS cho trang đăng nhập và đăng ký */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            display: inline-block; /* Hiển thị dạng inline-block */
+        }
+        .form-container form {
+            margin-bottom: 20px;
+        }
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="email"],
+        .form-container input[type="password"] {
+            width: calc(100% - 22px); /* Thêm -22px để tránh lỗi padding và border */
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .form-container button {
+            width: calc(100% - 22px); /* Thêm -22px để tránh lỗi padding và border */
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+        }
+        .form-container button:hover {
+            opacity: 0.8;
+            background-color: #0056b3; /* Màu sáng lên khi di chuột vào */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ">
+            <li class="nav-item active">
+              <a class="nav-link text-success" href="./index.html"><i class='bx bx-left-arrow-alt'></i> Back To Home </a>
+            </li>
+          </ul>
+          
+        </div>
+      </nav>
+
+    <div class="container">
+        <div class="form-container">
+            <h2>Đăng nhập</h2>
+            <form id="loginForm">
+                <div>
+                    <label for="loginUsername">Tên đăng nhập:</label>
+                    <input type="text" id="loginUsername" name="loginUsername">
+                </div>
+                <div>
+                    <label for="loginPassword">Mật khẩu:</label>
+                    <input type="password" id="loginPassword" name="loginPassword">
+                </div>
+                <button type="button" id="loginButton">Đăng nhập</button>
+            </form>
+        </div>
+
+        <div class="form-container">
+            <h2>Đăng ký thành viên</h2>
+            <form id="registerForm">
+                <div>
+                    <label for="username">Tên đăng nhập:</label>
+                    <input type="text" id="username" name="username">
+                </div>
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email">
+                </div>
+                <div>
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" name="password">
+                </div>
+                <div>
+                    <label for="confirmPassword">Xác nhận mật khẩu:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword">
+                </div>
+                <button type="submit">Đăng ký</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/jquery-3.7.1.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script>
+      
+        $('#loginButton').click(function() {
+            var loginUsername = $('#loginUsername').val();
+            var loginPassword = $('#loginPassword').val();
+
+      
+            if (loginUsername.trim() === '' || loginPassword.trim() === '') {
+                alert("Vui lòng nhập tên đăng nhập và mật khẩu.");
+                return;
+            }
+
+     
+            var users = JSON.parse(localStorage.getItem('users')) || [];
+            var user = users.find(u => u.username === loginUsername && u.password === loginPassword);
+
+            if (user) {
+                alert("Đăng nhập thành công!");
+                window.location.href = "";
+            } else {
+                alert("Tên đăng nhập hoặc mật khẩu không chính xác.");
+            }
+        });
+
+
+        $('#registerForm').submit(function(event) {
+            event.preventDefault();
+
+        
+            var username = $('#username').val();
+            var email = $('#email').val();
+            var password = $('#password').val();
+            var confirmPassword = $('#confirmPassword').val();
+
+       
+            if (password !== confirmPassword) {
+                alert("Mật khẩu và xác nhận mật khẩu không khớp.");
+                return;
+            }
+
+        
+            var users = JSON.parse(localStorage.getItem('users')) || [];
+            var existingUser = users.find(u => u.username === username);
+            if (existingUser) {
+                alert("Tên đăng nhập đã tồn tại. Vui lòng chọn tên đăng nhập khác.");
+                return;
+            }
+
+       
+            var newUser = { username: username, email: email, password: password };
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+
+       
+            alert("Đăng ký thành công!");
+
+       
+            alert("Đăng nhập thành công!");
+            window.location.href = "";
+        });
+    </script>
+</body>
+</html>
